@@ -2,10 +2,14 @@ package main;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
+//REVIEWED 13APR2022
+//
+//  keyPressed()
+//  keyReleased()
+//  keyTyped()
 public class KeyHandler implements KeyListener {
 
-    public boolean upPressed, downPressed, leftPressed, rightPressed;
+    public boolean upPressed, downPressed, leftPressed, rightPressed = false;
 
     @Override
     public void keyPressed(KeyEvent e) {

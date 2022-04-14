@@ -7,8 +7,11 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.nio.Buffer;
-
+//REVIEWED 13APR2022
+//
+//  setDefaultValues()  changeSpriteNum()
+//  getPlayerImage()    draw()
+//  update()
 public class Player extends Entity {
 
     GamePanel gp;
@@ -18,19 +21,24 @@ public class Player extends Entity {
     public final int screenY;
 
     public Player (GamePanel gp, KeyHandler keyH){
-
+//CONSTRUCT - player
         this.gp = gp;
         this.keyH = keyH;
-
+        setDefaultValues();
+        getPlayerImage();
+//IDENTIFY - viewport
         screenX = gp.screenWidth/2 - (gp.tileSize/2);
         screenY = gp.screenHeight/2 - (gp.tileSize/2);
 
-        setDefaultValues();
-        getPlayerImage();
+//DEFINE - collision region for player element
+        solidArea = new Rectangle();
+        solidArea.x = 8;
+        solidArea.y = 16;
+        solidArea.height = 32;
+        solidArea.width = 32;
     }
 
     public void setDefaultValues(){
-
         worldX=gp.tileSize * 23;
         worldY=gp.tileSize * 21;
         speed=4;
@@ -39,10 +47,6 @@ public class Player extends Entity {
 //RETRIEVE - player images from resource folder
     public void getPlayerImage() {
         try {
-            //ImageIO:  A class containing static convenience methods for locating ImageReaders and ImageWriters, and
-            //          performing simple encoding and decoding.
-            //getClass(): https://stackabuse.com/javas-object-methods-getclass/
-            //getResourceAsStream(): Returns an input stream for reading the specified resource.
             up1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_1.png"));
             up2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_2.png"));
             down1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_1.png"));
@@ -58,26 +62,26 @@ public class Player extends Entity {
     }
 
     public void update() {
-        if (keyH.upPressed == true){
-            direction = "up";
-            worldY -= speed;
-            this.changeSpriteNum();}
-        else if (keyH.downPressed == true){
-            direction="down";
-            worldY += speed;
-            this.changeSpriteNum();}
-        else if (keyH.leftPressed == true){
-            direction="left";
-            worldX -= speed;
-            this.changeSpriteNum();}
-        else if (keyH.rightPressed == true){
-            direction="right";
-            worldX += speed;
-            this.changeSpriteNum();}
+        if(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed ){
+        if (keyH.upPressed){direction = "up"; this.changeSpriteNum();}
+        else if (keyH.downPressed){direction="down"; this.changeSpriteNum();}
+        else if (keyH.leftPressed){direction="left"; this.changeSpriteNum();}
+        else if (keyH.rightPressed){direction="right"; this.changeSpriteNum();}
+//IDENTIFY - collisions
+        collisionOn = false;
+        gp.cChecker.checkTile(this  );
 
+        if(collisionOn == false) {
+            switch(direction){
+                case "up": worldY -= speed; break;
+                case "down": worldY += speed; break;
+                case "left": worldX -= speed; break;
+                case "right": worldX += speed; break;
+            }}
         spriteCounter++;
-    }
+    }}
 
+//METHOD - for alternating image for appearance of movement
     public void changeSpriteNum(){
         if(spriteCounter > 14) {
             if(spriteNum == 1) {
@@ -86,12 +90,10 @@ public class Player extends Entity {
                 spriteNum = 1;
             }
             spriteCounter = 0;
-        }
-    }
+        }}
 
+//DRAW - player on screen
     public void draw(Graphics2D g2) {
-//        g2.setColor(Color.WHITE);
-//        g2.fillRect(x,y, gp.tileSize, gp.tileSize);
 
         BufferedImage image = null;
 
@@ -129,3 +131,9 @@ public class Player extends Entity {
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
     }
 }
+
+//ImageIO:  A class containing static convenience methods for locating ImageReaders and ImageWriters, and
+//          performing simple encoding and decoding.
+//getClass(): https://stackabuse.com/javas-object-methods-getclass/
+//getResourceAsStream(): Returns an input stream for reading the specified resource.
+

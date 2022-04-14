@@ -1,14 +1,19 @@
 package main;
 
 import entity.Player;
+import object.SuperObject;
 import tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
-
+//REVIEWED 13APR2022
+//
+//  setupGame()     startGameThread()
+//  update()        paintComponent()
+//  run()
 public class GamePanel extends JPanel implements Runnable {
 
-//SCREEN SETTINGS
+//DEFINE - viewport settings
     final int originalTileSize = 16;    //16x16 tile
     final int scale = 3;                //makes pixels look larger
 
@@ -18,20 +23,23 @@ public class GamePanel extends JPanel implements Runnable {
     public int screenWidth = tileSize * maxScreenCol;
     public int screenHeight = tileSize * maxScreenRow;
 
-    //WORLD SETTINGS
+//DEFINE - world settings
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
     public final int worldWidth = tileSize * maxWorldCol;
     public final int worldHeight = tileSize * maxWorldRow;
 
-    //FPS
+//DEFINE - FPS
     int FPS = 60;
 
     TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler();
-    public Player player = new Player(this,keyH);
-//JAVA NOTE: Threads are startable and stoppable elements
+    //JAVA NOTE: Threads are startable and stoppable elements
     Thread gameThread;
+    public CollisionChecker cChecker = new CollisionChecker(this);
+    public AssetSetter aSetter = new AssetSetter(this);
+    public Player player = new Player(this,keyH);
+    public SuperObject obj[] = new SuperObject[10];
 
     public GamePanel() {
 
@@ -40,6 +48,10 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
+    }
+
+    public void setupGame(){
+        aSetter.setObject();
     }
 
     public void startGameThread() {
@@ -75,10 +87,7 @@ public class GamePanel extends JPanel implements Runnable {
                 System.out.println("FPS:" + drawCount);
                 drawCount = 0;
                 timer = 0;
-            }
-        }
-
-    }
+            }}}
 
     public void update(){
         player.update();
@@ -89,11 +98,14 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
-
+//DRAW - tiles
         tileM.draw(g2);
+//DRAW - objects
+        for(int i = 0; i < obj.length; i++){
+            if(obj[i] != null){
+                obj[i].draw(g2,this);
+            }}
+//DRAW - player
         player.draw(g2);
-
         g2.dispose();
-
-    }
-}
+    }}

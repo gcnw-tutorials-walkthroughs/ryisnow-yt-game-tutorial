@@ -1,7 +1,9 @@
 package main;
 
 import javax.swing.*;
-
+//
+//REVIEWED 13APR2022
+//
 public class Main {
 
     public static void main(String[] args) {
@@ -13,13 +15,12 @@ public class Main {
 
         GamePanel gamePanel = new GamePanel ();
         window.add(gamePanel);
-//Cause this window to be sized to fit the preferred size and layout
-//of its subcomponents (e.g. GamePanel)
+//DEFINE - window size
         window.pack();
-
         window.setLocationRelativeTo(null);
         window.setVisible(true);
-
+//START - game in window
+        gamePanel.setupGame();
         gamePanel.startGameThread();
     }
 }
