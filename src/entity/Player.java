@@ -19,6 +19,7 @@ public class Player extends Entity {
 
     public final int screenX;
     public final int screenY;
+    public int hasKey = 0;
 
     public Player (GamePanel gp, KeyHandler keyH){
 //CONSTRUCT - player
@@ -34,6 +35,8 @@ public class Player extends Entity {
         solidArea = new Rectangle();
         solidArea.x = 8;
         solidArea.y = 16;
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
         solidArea.height = 32;
         solidArea.width = 32;
     }
@@ -70,6 +73,9 @@ public class Player extends Entity {
 //IDENTIFY - collisions
         collisionOn = false;
         gp.cChecker.checkTile(this  );
+//DETERMINE - reaction to collision
+        int objIndex = gp.cChecker.checkObject(this,true);
+        pickUpObject(objIndex);
 
         if(collisionOn == false) {
             switch(direction){
@@ -91,6 +97,44 @@ public class Player extends Entity {
             }
             spriteCounter = 0;
         }}
+
+        public void pickUpObject(int objectIndex){
+        if(objectIndex != 999) {
+            String objectName = gp.obj[objectIndex].name;
+
+            switch(objectName){
+                case "Key":
+                    gp.playSE(1);
+                    hasKey++;
+                    gp.obj[objectIndex] = null;
+                    gp.ui.showMessage("You got a key!");
+                    break;
+                case "Door":
+                    if(hasKey > 0){
+                        gp.playSE(3);
+                        gp.obj[objectIndex] = null;
+                        hasKey--;
+                        gp.ui.showMessage("DOOR UNLOCKED!");
+                    }
+                    else{
+                        gp.ui.showMessage("You need a KEY!");
+                    }
+                    break;
+                case "Boots":
+                    gp.playSE(2);
+                    speed += 2;
+                    gp.obj[objectIndex] = null;
+                    gp.ui.showMessage("Boots Acquired! [SPEED UP]");
+                    break;
+                case "Chest":
+                    gp.ui.gameFinished = true;
+                    gp.stopMusic();
+                    gp.playSE(4);
+                    gp.ui.showMessage("CHEST OPENED!");
+                    break;
+            }
+        }
+        }
 
 //DRAW - player on screen
     public void draw(Graphics2D g2) {
