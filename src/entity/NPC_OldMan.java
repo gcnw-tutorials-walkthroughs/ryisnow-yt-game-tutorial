@@ -17,6 +17,7 @@ public class NPC_OldMan extends Entity {
         direction = "down";
         speed = 1;
         getImage();
+        setDialogue();
     }
 
     public void getImage() {
@@ -28,6 +29,13 @@ public class NPC_OldMan extends Entity {
         left2 = setup("/npc/oldman_left_2");
         right1 = setup("/npc/oldman_right_1");
         right2 = setup("/npc/oldman_right_2");
+    }
+
+    public void setDialogue(){
+        dialogues[0] = "Good Day!";
+        dialogues[1] = "Are you HERE to find ZE treasure?";
+        dialogues[2] = "I used to be a great wizard until \nI took a spell to the knee.";
+        dialogues[3] = "Alrighty then, may luck find you!";
     }
 
     public void setAction(){
@@ -42,5 +50,9 @@ public class NPC_OldMan extends Entity {
             if (i > 75 && i < 100) direction = "right";
             actionLockCounter = 0;
         }
+    }
+
+    public void speak(){
+        super.speak();
     }
 }

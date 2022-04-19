@@ -35,7 +35,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 //DEFINE - Game System/Management
     TileManager tileM = new TileManager(this);
-    KeyHandler keyH = new KeyHandler(this);
+    public KeyHandler keyH = new KeyHandler(this);
     Sound music = new Sound();
     Sound se = new Sound();
 //JAVA NOTE: Threads are startable and stoppable elements
@@ -51,6 +51,7 @@ public class GamePanel extends JPanel implements Runnable {
     public int gameState;
     public final int playState = 1;
     public final int pauseState = 2;
+    public final int dialogueState = 3;
 
 
 //GAMEPANEL()//GAMEPANEL()//GAMEPANEL()//GAMEPANEL()//GAMEPANEL()//GAMEPANEL()//GAMEPANEL()
@@ -115,9 +116,10 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
         if(gameState == pauseState){/*nothing yet*/}
+        if(gameState == dialogueState){ui.drawDialogueScreen();}
 }
 
-
+//DRAW COMPONENTS//DRAW COMPONENTS//DRAW COMPONENTS//DRAW COMPONENTS//DRAW COMPONENTS
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;

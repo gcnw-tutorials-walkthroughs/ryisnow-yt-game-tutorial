@@ -10,7 +10,7 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener {
 
     GamePanel gp;
-    public boolean upPressed, downPressed, leftPressed, rightPressed = false;
+    public boolean upPressed, downPressed, leftPressed, rightPressed , enterPressed;
 //DEBEG//DEBUG//DEBEG//DEBUG//DEBEG//DEBUG//DEBEG//DEBUG//DEBEG//DEBUG//DEBEG//DEBUG
     boolean checkDrawTime = false;
 //DEBEG//DEBUG//DEBEG//DEBUG//DEBEG//DEBUG//DEBEG//DEBUG//DEBEG//DEBUG//DEBEG//DEBUG
@@ -22,22 +22,51 @@ public class KeyHandler implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
-
-        if(code == KeyEvent.VK_W){upPressed = true;}
-        if(code == KeyEvent.VK_S){downPressed = true;}
-        if(code == KeyEvent.VK_A){leftPressed = true;}
-        if(code == KeyEvent.VK_D){rightPressed = true;}
-        if(code == KeyEvent.VK_P){
-            if(gp.gameState == gp.playState){
-                gp.gameState = gp.pauseState;}
-            else if(gp.gameState == gp.pauseState){
-                gp.gameState = gp.playState;}
+//GAME STATE KEY TOGGLES//GAME STATE KEY TOGGLES//GAME STATE KEY TOGGLES//GAME STATE KEY TOGGLES
+//PLAY
+        if (gp.gameState == gp.playState) {
+            if (code == KeyEvent.VK_W) {
+                upPressed = true;
             }
+            if (code == KeyEvent.VK_S) {
+                downPressed = true;
+            }
+            if (code == KeyEvent.VK_A) {
+                leftPressed = true;
+            }
+            if (code == KeyEvent.VK_D) {
+                rightPressed = true;
+            }
+            if (code == KeyEvent.VK_P) {
+                gp.gameState = gp.pauseState;
+            }
+            if (code == KeyEvent.VK_ENTER) {
+                enterPressed = true;
+            }
+        }
+
 //DEBEG//DEBUG//DEBEG//DEBUG//DEBEG//DEBUG//DEBEG//DEBUG//DEBEG//DEBUG//DEBEG//DEBUG
-        if(code == KeyEvent.VK_T){
-            if(checkDrawTime) {checkDrawTime = false;}
-            else {checkDrawTime = true;}}
+        if (code == KeyEvent.VK_T) {
+            if (checkDrawTime) {
+                checkDrawTime = false;
+            } else {
+                checkDrawTime = true;
+            }
+        }
 //DEBEG//DEBUG//DEBEG//DEBUG//DEBEG//DEBUG//DEBEG//DEBUG//DEBEG//DEBUG//DEBEG//DEBUG
+
+//PAUSE
+        else if (gp.gameState == gp.pauseState) {
+            if (code == KeyEvent.VK_P) {
+                gp.gameState = gp.playState;
+            }
+        }
+//DIALOGUE
+        else if (gp.gameState == gp.dialogueState) {
+            if (code == KeyEvent.VK_ENTER) {
+                gp.gameState = gp.playState;
+            }
+        }
     }
 
     @Override
