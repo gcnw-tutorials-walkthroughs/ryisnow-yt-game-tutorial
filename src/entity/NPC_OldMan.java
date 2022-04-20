@@ -33,9 +33,9 @@ public class NPC_OldMan extends Entity {
 
     public void setDialogue(){
         dialogues[0] = "Good Day!";
-        dialogues[1] = "Are you HERE to find ZE treasure?";
-        dialogues[2] = "I used to be a great wizard until \nI took a spell to the knee.";
-        dialogues[3] = "Alrighty then, may luck find you!";
+        dialogues[1] = "Are you HERE to find \nZE TREASURE?";
+        dialogues[2] = "I used to be a GREAT wizard \n...until I took a spell\nto the knee.";
+        dialogues[3] = "Alrighty then, \nmay luck find you!";
     }
 
     public void setAction(){
