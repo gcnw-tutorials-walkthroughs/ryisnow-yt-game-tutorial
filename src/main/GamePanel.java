@@ -6,6 +6,7 @@ import object.SuperObject;
 import tile.TileManager;
 
 import javax.swing.*;
+import javax.xml.stream.util.EventReaderDelegate;
 import java.awt.*;
 //REVIEWED 13APR2022
 //
@@ -14,7 +15,7 @@ import java.awt.*;
 //  run()
 public class GamePanel extends JPanel implements Runnable {
 
-//DEFINE - viewport settings
+//VARIABLE & OBJECT CREATION//VARIABLE & OBJECT CREATION//VARIABLE & OBJECT CREATION
     final int originalTileSize = 16;    //16x16 tile
     final int scale = 3;                //makes pixels look larger
 
@@ -24,29 +25,31 @@ public class GamePanel extends JPanel implements Runnable {
     public int screenWidth = tileSize * maxScreenCol;
     public int screenHeight = tileSize * maxScreenRow;
 
-//DEFINE - world settings
+//world settings
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
     public final int worldWidth = tileSize * maxWorldCol;
     public final int worldHeight = tileSize * maxWorldRow;
 
-//DEFINE - FPS
+//FPS
     int FPS = 60;
 
-//DEFINE - Game System/Management
+//Game System/Management
     TileManager tileM = new TileManager(this);
     public KeyHandler keyH = new KeyHandler(this);
     Sound music = new Sound();
     Sound se = new Sound();
-//JAVA NOTE: Threads are startable and stoppable elements
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
     public UI ui = new UI(this);
-    Thread gameThread;
-//ENTITY AND OBJECT//ENTITY AND OBJECT//ENTITY AND OBJECT//ENTITY AND OBJECT//ENTITY AND OBJECT
+    public EventHandler eHandler = new EventHandler(this);
+    Thread gameThread; //JAVA NOTE: Threads are startable and stoppable elements
+
+//Entity and Objects
     public Player player = new Player(this,keyH);
     public SuperObject obj[] = new SuperObject[10];
     public Entity npc[] = new Entity[10];
+
 //SET GAME STATE//SET GAME STATE//SET GAME STATE//SET GAME STATE//SET GAME STATE//SET GAME STATE
     public int gameState;
     public final int titleState = 0;
@@ -55,7 +58,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int dialogueState = 3;
 
 
-//GAMEPANEL()//GAMEPANEL()//GAMEPANEL()//GAMEPANEL()//GAMEPANEL()//GAMEPANEL()//GAMEPANEL()
+//GAMEPANEL()
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth,screenHeight));
         this.setBackground(Color.BLACK);

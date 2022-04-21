@@ -43,6 +43,10 @@ public class Player extends Entity {
         worldY=gp.tileSize * 21;
         speed=4;
         direction="down";
+
+//PLAYER STATUS
+        maxLife = 6;
+        life = maxLife;
     }
 //RETRIEVE  -   player images from resource folder
     public void getPlayerImage() {
@@ -72,6 +76,9 @@ public class Player extends Entity {
 //OBJECT COLLISION//OBJECT COLLISION//OBJECT COLLISION//OBJECT COLLISION//OBJECT COLLISION
         int objIndex = gp.cChecker.checkObject(this,true);
         pickUpObject(objIndex);
+
+        gp.eHandler.checkEvent();
+        gp.keyH.enterPressed = false;
 
         if(collisionOn == false) {
             switch(direction){
@@ -106,7 +113,7 @@ public class Player extends Entity {
                 gp.npc[npcIndex].speak();
             }
         }
-        gp.keyH.enterPressed = false;
+
     }
 
 //DRAW - player on screen
