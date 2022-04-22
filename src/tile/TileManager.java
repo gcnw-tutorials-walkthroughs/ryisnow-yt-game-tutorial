@@ -47,7 +47,7 @@ public class TileManager {
             setup(9, "grass00", false);
 //ACTUAL USED VALUES
             setup(10, "grass00", false);
-            setup(11, "grass01", true);
+            setup(11, "grass01", false);
             setup(12, "water00", true);
             setup(13, "water01", false);
             setup(14, "water02", true);

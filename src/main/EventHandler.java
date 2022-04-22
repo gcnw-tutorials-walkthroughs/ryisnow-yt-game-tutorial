@@ -48,8 +48,9 @@ public class EventHandler {
             if (hit(23, 19, "any") == true) {damagePit(27, 16, gp.dialogueState);}
 
 //        if(hit(27,16,"right") == true){teleport(gp.dialogueState);}
-            if (hit(23, 12, "up") == true) {healingPool(23, 12, gp.dialogueState);}
         }
+        if (hit(23, 12, "up") == true) {healingPool(23, 12, gp.dialogueState);}
+
     }
 
     public boolean hit(int col, int row, String reqDirection){
@@ -93,10 +94,12 @@ public class EventHandler {
     }
 
     public void healingPool(int col, int row, int gameState){
+        System.out.println("heal!");
         if(gp.keyH.enterPressed == true){
             gp.gameState = gameState;
             gp.ui.currentDialogue = "You drank some water \nfrom the healing pool!";
             gp.player.life = gp.player. maxLife;
+            canTouchEvent = true;
         }
     }
 }
