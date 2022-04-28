@@ -43,7 +43,8 @@ public class KeyHandler implements KeyListener {
                             System.exit(0);
                     }
                 }
-            } else if (gp.ui.titleScreenState == 1) {
+            }
+            else if (gp.ui.titleScreenState == 1) {
                 if (code == KeyEvent.VK_W) {
                     gp.ui.commandNum = (gp.ui.commandNum-- <= 0) ? 3 : gp.ui.commandNum--;
                 }
@@ -78,29 +79,31 @@ public class KeyHandler implements KeyListener {
 
 //PLAY
 
-        if (code == KeyEvent.VK_W) {
-            upPressed = true;
-        }
-        if (code == KeyEvent.VK_S) {
-            downPressed = true;
-        }
-        if (code == KeyEvent.VK_A) {
-            leftPressed = true;
-        }
-        if (code == KeyEvent.VK_D) {
-            rightPressed = true;
-        }
-        if (code == KeyEvent.VK_P) {
-            if (gp.gameState == gp.playState) {
-                gp.gameState = gp.pauseState;
-                System.out.println("Hello");
+        else if (gp.gameState == gp.playState) {
+            if (code == KeyEvent.VK_W) {
+                upPressed = true;
             }
-            else if(gp.gameState == gp.pauseState){
-                gp.gameState = gp.playState;
+            if (code == KeyEvent.VK_S) {
+                downPressed = true;
             }
-        }
-        if (code == KeyEvent.VK_ENTER) {
-            enterPressed = true;
+            if (code == KeyEvent.VK_A) {
+                leftPressed = true;
+            }
+            if (code == KeyEvent.VK_D) {
+                rightPressed = true;
+            }
+            if (code == KeyEvent.VK_P) {
+                if (gp.gameState == gp.playState) {
+                    gp.gameState = gp.pauseState;
+                    System.out.println("Hello");
+                }
+                else if(gp.gameState == gp.pauseState){
+                    gp.gameState = gp.playState;
+                }
+            }
+            if (code == KeyEvent.VK_ENTER) {
+                enterPressed = true;
+            }
         }
 
 
@@ -137,7 +140,7 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_S){downPressed = false;}
         if(code == KeyEvent.VK_A){leftPressed = false;}
         if(code == KeyEvent.VK_D){rightPressed = false;}
-    }
+     }
 
     //UNNEEDED METHOD
     public void keyTyped(KeyEvent e) {}
