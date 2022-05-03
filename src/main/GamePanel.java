@@ -60,6 +60,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int playState = 1;
     public final int pauseState = 2;
     public final int dialogueState = 3;
+    public final int characterState = 4;
 
 
 //GAMEPANEL()
@@ -126,7 +127,8 @@ public class GamePanel extends JPanel implements Runnable {
 
             for(int i = 0;i < monster.length;i++){
                 if(monster[i] != null){
-                    monster[i].update();
+                    if(monster[i].alive && !monster[i].dying) {monster[i].update();}
+                    if(!monster[i].alive) {monster[i] = null;}
                 }
             }
         }
