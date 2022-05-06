@@ -14,7 +14,7 @@ public class MON_GreenSlime extends Entity {
 
         this.gp = gp;
 
-        type = 2; //MONSTER
+        type = type_monster; //MONSTER
         name = "Green Slime";
         speed = 1;
         maxLife = 10;
