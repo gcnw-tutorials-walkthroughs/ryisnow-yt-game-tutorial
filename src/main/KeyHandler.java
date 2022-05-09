@@ -10,7 +10,7 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener {
 
     GamePanel gp;
-    public boolean upPressed, downPressed, leftPressed, rightPressed , enterPressed, pausePressed;
+    public boolean upPressed, downPressed, leftPressed, rightPressed , enterPressed, shotKeyPressed;
 //DEBEG//DEBUG//DEBEG//DEBUG//DEBEG//DEBUG//DEBEG//DEBUG//DEBEG//DEBUG//DEBEG//DEBUG
     boolean checkDrawTime = false;
 //DEBEG//DEBUG//DEBEG//DEBUG//DEBEG//DEBUG//DEBEG//DEBUG//DEBEG//DEBUG//DEBEG//DEBUG
@@ -67,6 +67,7 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_P) {gp.gameState = gp.pauseState;}
         if (code == KeyEvent.VK_C) {gp.gameState = gp.characterState;}
         if (code == KeyEvent.VK_ENTER) {enterPressed = true;}
+        if (code == KeyEvent.VK_SPACE) {shotKeyPressed = true;}
     }
 
     public void pauseState(int code) {
@@ -96,6 +97,7 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_S){downPressed = false;}
         if(code == KeyEvent.VK_A){leftPressed = false;}
         if(code == KeyEvent.VK_D){rightPressed = false;}
+        if(code == KeyEvent.VK_SPACE){shotKeyPressed = false;}
      }
 
     //UNNEEDED METHOD

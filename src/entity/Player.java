@@ -2,6 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import object.OBJ_Fireball;
 import object.OBJ_Key;
 import object.OBJ_Shield_Wood;
 import object.OBJ_Sword_Normal;
@@ -67,6 +68,7 @@ public class Player extends Entity {
         coin = 0;
         currentWeapon = new OBJ_Sword_Normal(gp);
         currentShield = new OBJ_Shield_Wood(gp);
+        projectile = new OBJ_Fireball(gp);
         attack = getAttack();
         defense = getDefense();
     }
@@ -187,12 +189,29 @@ public class Player extends Entity {
             gp.keyH.enterPressed = false;
             spriteCounter++;
         }
+
+        if(gp.keyH.shotKeyPressed && projectile.alive == false && shotAvailableCounter == 30){
+
+            //SET DEFAULT VALUES FOR PROJECTILE
+            projectile.set(worldX, worldY, direction, true, this);
+
+            //ADD IT TO PROJECTILE LIST
+            gp.projectileList.add(projectile);
+            shotAvailableCounter = 0;
+
+            gp.playSE(10);
+        }
+
         if (invincible) {
             invincibleCounter++;
             if (invincibleCounter > 60) {
                 invincible = false;
                 invincibleCounter = 0;
             }
+        }
+
+        if(shotAvailableCounter < 30){
+            shotAvailableCounter++;
         }
     }
 
@@ -231,7 +250,7 @@ public class Player extends Entity {
             }
             //CHECK FOR COLLISION WITH UPDATED HITBOX LOCATION
             int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
-            damageMonster(monsterIndex);
+            damageMonster(monsterIndex, attack);
 
             worldX = currentWorldX;
             worldY = currentWorldY;
@@ -274,7 +293,7 @@ public class Player extends Entity {
 
     public void contactMonster(int monsterIndex) {
         if (monsterIndex != 999) {
-            if (!invincible) {
+            if (!invincible && !gp.monster[monsterIndex].dying) {
                 gp.playSE(6);
                 int damage = gp.monster[monsterIndex].attack - defense;
                 if(damage < 0) {damage = 0;}
@@ -284,7 +303,7 @@ public class Player extends Entity {
         }
     }
 
-    public void damageMonster(int monsterIndex) {
+    public void damageMonster(int monsterIndex, int attack) {
         if(monsterIndex != 999){
             if(gp.monster[monsterIndex].invincible == false) {
                 gp.playSE(5);
