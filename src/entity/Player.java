@@ -60,6 +60,9 @@ public class Player extends Entity {
         level = 1;
         maxLife = 6;
         life = maxLife;
+        maxMana = 4;
+        mana = maxMana;
+        ammo = 10;
         speed=4;
         strength = 1;
         dexterity = 1;
@@ -190,11 +193,13 @@ public class Player extends Entity {
             spriteCounter++;
         }
 
-        if(gp.keyH.shotKeyPressed && projectile.alive == false && shotAvailableCounter == 30){
+        if(gp.keyH.shotKeyPressed && projectile.alive == false
+                && shotAvailableCounter == 30 && projectile.haveResource(this)){
 
             //SET DEFAULT VALUES FOR PROJECTILE
             projectile.set(worldX, worldY, direction, true, this);
 
+            projectile.subtractResource(this);
             //ADD IT TO PROJECTILE LIST
             gp.projectileList.add(projectile);
             shotAvailableCounter = 0;

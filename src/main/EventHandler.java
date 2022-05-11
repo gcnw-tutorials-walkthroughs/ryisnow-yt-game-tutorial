@@ -101,7 +101,8 @@ public class EventHandler {
             gp.player.attackCanceled = true;
             gp.playSE(2);
             gp.ui.currentDialogue = "You drank some water \nfrom the healing pool!";
-            gp.player.life = gp.player. maxLife;
+            gp.player.life = gp.player.maxLife;
+            gp.player.mana = gp.player.maxMana;
             gp.aSetter.setMonster();
         }
     }
