@@ -3,6 +3,7 @@ package main;
 import entity.NPC_OldMan;
 import monster.MON_GreenSlime;
 import object.*;
+import tile_interactive.IT_DryTree;
 
 //
 //REVIEWED 13APR2022
@@ -40,6 +41,14 @@ public class AssetSetter {
         gp.obj[i] = new OBJ_Potion_Red(gp);
         gp.obj[i].worldX = gp.tileSize*22;
         gp.obj[i].worldY = gp.tileSize*27;
+        i++;
+        gp.obj[i] = new OBJ_Heart(gp);
+        gp.obj[i].worldX = gp.tileSize*22;
+        gp.obj[i].worldY = gp.tileSize*29;
+        i++;
+        gp.obj[i] = new OBJ_ManaCrystal(gp);
+        gp.obj[i].worldX = gp.tileSize*22;
+        gp.obj[i].worldY = gp.tileSize*31;
     }
 
     public void setNPC(){
@@ -70,5 +79,16 @@ public class AssetSetter {
         gp.monster[i].worldX = gp.tileSize*38;
         gp.monster[i].worldY = gp.tileSize*42;
         i++;
+    }
+
+    public void setInteractiveTile(){
+        int i=0;
+        gp.iTile[i] = new IT_DryTree(gp,27,12); i++;
+        gp.iTile[i] = new IT_DryTree(gp,28,12); i++;
+        gp.iTile[i] = new IT_DryTree(gp,29,12); i++;
+        gp.iTile[i] = new IT_DryTree(gp,30,12); i++;
+        gp.iTile[i] = new IT_DryTree(gp,31,12); i++;
+        gp.iTile[i] = new IT_DryTree(gp,32,12); i++;
+        gp.iTile[i] = new IT_DryTree(gp,33,12);
     }
 }

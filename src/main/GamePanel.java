@@ -3,6 +3,7 @@ package main;
 import entity.Entity;
 import entity.Player;
 import tile.TileManager;
+import tile_interactive.InteractiveTile;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,11 +51,12 @@ public class GamePanel extends JPanel implements Runnable {
 
 //Entity and Objects
     public Player player = new Player(this,keyH);
-    public Entity obj[] = new Entity[10];
+    public Entity obj[] = new Entity[20];
     public Entity npc[] = new Entity[10];
     public Entity monster[] = new Entity[20];
-    ArrayList<Entity> entityList = new ArrayList<>();
     public ArrayList<Entity> projectileList = new ArrayList<>();
+    public InteractiveTile iTile[] = new InteractiveTile[50];
+    ArrayList<Entity> entityList = new ArrayList<>();
 
 //SET GAME STATE//SET GAME STATE//SET GAME STATE//SET GAME STATE//SET GAME STATE//SET GAME STATE
     public int gameState;
@@ -78,6 +80,7 @@ public class GamePanel extends JPanel implements Runnable {
         aSetter.setObject();
         aSetter.setNPC();
         aSetter.setMonster();
+        aSetter.setInteractiveTile();
         playMusic(0);
         stopMusic();
         gameState = titleState;
@@ -134,10 +137,18 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
 
+            for(int i=0; i < iTile.length; i++){
+                if(iTile[i] != null){
+                    iTile[i].update();
+                }
+            }
+
             for(int i = 0;i < monster.length;i++){
                 if(monster[i] != null){
                     if(monster[i].alive && !monster[i].dying) {monster[i].update();}
-                    if(!monster[i].alive) {monster[i] = null;}
+                    if(!monster[i].alive) {
+                        monster[i].checkDrop();
+                        monster[i] = null;}
                 }
             }
         }
@@ -157,6 +168,12 @@ public class GamePanel extends JPanel implements Runnable {
         else{
 //TILES
             tileM.draw(g2);
+
+            for(int i=0;i< iTile.length;i++){
+                if(iTile[i] != null){
+                    iTile[i].draw(g2);
+                }
+            }
 
 //ADD ENTITIES TO LIST
             entityList.add(player);

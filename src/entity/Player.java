@@ -2,10 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
-import object.OBJ_Fireball;
-import object.OBJ_Key;
-import object.OBJ_Shield_Wood;
-import object.OBJ_Sword_Normal;
+import object.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -64,12 +61,12 @@ public class Player extends Entity {
         mana = maxMana;
         ammo = 10;
         speed=4;
-        strength = 1;
+        strength = 5;
         dexterity = 1;
         exp = 0;
         nextLevelExp = 5;
         coin = 0;
-        currentWeapon = new OBJ_Sword_Normal(gp);
+        currentWeapon = new OBJ_Axe(gp);
         currentShield = new OBJ_Shield_Wood(gp);
         projectile = new OBJ_Fireball(gp);
         attack = getAttack();
@@ -161,6 +158,9 @@ public class Player extends Entity {
 //MONSTER
             int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
             contactMonster(monsterIndex);
+            //INTERACTIVE TILE
+            int iTileIndex = gp.cChecker.checkEntity(this, gp.iTile);
+
 
             gp.eHandler.checkEvent();
 
@@ -214,7 +214,8 @@ public class Player extends Entity {
                 invincibleCounter = 0;
             }
         }
-
+        if(life > maxLife){life = maxLife;}
+        if(mana > maxMana){mana = maxMana;}
         if(shotAvailableCounter < 30){
             shotAvailableCounter++;
         }
@@ -257,6 +258,10 @@ public class Player extends Entity {
             int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
             damageMonster(monsterIndex, attack);
 
+            //INTERACTIVE TILE
+            int iTileIndex = gp.cChecker.checkEntity(this, gp.iTile);
+            damageInteractiveTile(iTileIndex);
+
             worldX = currentWorldX;
             worldY = currentWorldY;
             solidArea.width = attackArea.width;
@@ -273,18 +278,25 @@ public class Player extends Entity {
 
     public void pickUpObject(int objectIndex){
         if(objectIndex != 999) {
-            String text;
-
-            if(inventory.size() <= maxInventorySize){
-                inventory.add(gp.obj[objectIndex]);
-                gp.playSE(1);
-                text = "Got a " + gp.obj[objectIndex].name + "!";
+            //PICKUP ONLY
+            if(gp.obj[objectIndex].type == type_pickupOnly){
+                gp.obj[objectIndex].use(this);
+                gp.obj[objectIndex] = null;
             }
+            //INVENTORY ITEMS
             else {
-                text = "You cannot carry anymore!";
+                String text;
+
+                if (inventory.size() <= maxInventorySize) {
+                    inventory.add(gp.obj[objectIndex]);
+                    gp.playSE(1);
+                    text = "Got a " + gp.obj[objectIndex].name + "!";
+                } else {
+                    text = "You cannot carry anymore!";
+                }
+                gp.ui.addMessage(text);
+                gp.obj[objectIndex] = null;
             }
-            gp.ui.addMessage(text);
-            gp.obj[objectIndex] = null;
         }
     }
 
@@ -327,6 +339,20 @@ public class Player extends Entity {
                     exp += gp.monster[monsterIndex].exp;
                     checkLevelUp();
                 }
+            }
+        }
+    }
+
+    public void damageInteractiveTile(int tileIndex){
+        if(tileIndex != 999
+                && gp.iTile[tileIndex].destructible
+                && gp.iTile[tileIndex].isCorrectItem(this)
+                && !gp.iTile[tileIndex].invincible){
+            gp.iTile[tileIndex].playSE();
+            gp.iTile[tileIndex].life--;
+            gp.iTile[tileIndex].invincible = true;
+            if(gp.iTile[tileIndex].life == 0) {
+                gp.iTile[tileIndex] = gp.iTile[tileIndex].getDestroyedForm();
             }
         }
     }
