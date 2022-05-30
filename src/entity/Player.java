@@ -233,7 +233,6 @@ public class Player extends Entity {
         }}
 
     public void attacking() {
-        System.out.println("attacking");
         spriteCounter++;
         if(spriteCounter <= 5) {
             spriteNum = 1;
@@ -351,6 +350,9 @@ public class Player extends Entity {
             gp.iTile[tileIndex].playSE();
             gp.iTile[tileIndex].life--;
             gp.iTile[tileIndex].invincible = true;
+
+            generateParticle(gp.iTile[tileIndex], gp.iTile[tileIndex]);
+
             if(gp.iTile[tileIndex].life == 0) {
                 gp.iTile[tileIndex] = gp.iTile[tileIndex].getDestroyedForm();
             }
